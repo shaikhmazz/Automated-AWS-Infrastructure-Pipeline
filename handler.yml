@@ -1,0 +1,17 @@
+---
+- name: handler example
+  hosts: webservers
+  become: yes
+
+  tasks:
+
+    - name: install nginx
+      apt:
+        name: nginx
+        state: present
+      notify:
+        - nginx Installed
+  handlers:
+    - name: nginx Installed
+      debug:
+        msg: "Nginx installation task made a change/ successfully installed."

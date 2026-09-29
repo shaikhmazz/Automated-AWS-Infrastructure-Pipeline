@@ -1,29 +1,86 @@
 ---
-- name: Configure web servers
-  hosts: web02
-  become: true
+- name: configure web servers
+  hosts: web01
+  become: yes
+
+  vars:
+    app_user: webadmin
 
   tasks:
     - name: Install Nginx
       apt:
         name: nginx
         state: present
-        update_cache: true
+        update_cache: yes
 
-    - name: Ensure Nginx service is running and enabled
+    - name: check nginx is running or not
       service:
         name: nginx
         state: started
-        enabled: true
+        enabled: yes
 
-    - name: Create practice directory
+    - name: create a inventory
       file:
         path: /home/ubuntu/practice
         state: directory
-        mode: '0755'
 
-    - name: Copy index2.html to web root index.html
+    - name: copy index.html file
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+
+- name: configure web servers
+  hosts: web02
+  become: yes
+
+  vars:
+    app_user: webadmin
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: create a inventory
+      file:
+        path: /home/ubuntu/practice
+        state: directory
+
+    - name: create index.html
       copy:
         src: index2.html
         dest: /var/www/html/index.html
-        mode: '0644'
+
+    - name: create web app user
+      user:
+        name: "{{ app_user }}"
+        state: present
+
+- name: configure DataBase server
+  hosts: dbservers
+  become: yes
+
+  vars:
+    app_user: dbadmin
+
+  tasks:
+    - name: create database user
+      user:
+        name: "{{ app_user }}"
+        state: present
+
+    - name: Install MariaDB server
+      apt:
+        name:
+          - mariadb-server
+          - python3-pymysql
+        state: present
+        update_cache: yes
