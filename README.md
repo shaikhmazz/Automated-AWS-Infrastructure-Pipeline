@@ -1,6 +1,6 @@
-# 🚀 Terraform + Jenkins: Automated AWS Infrastructure Pipeline
+# Automated AWS Infrastructure Pipeline (Terraform + Jenkins + Ansible)
 
-> Push code → Jenkins wakes up → Terraform plans your infra → you hit approve → AWS builds it.
+> Push code → Jenkins wakes up → Terraform plans your Multiple infra → you hit approve → AWS builds it → Managed by Ansible Playbook.
 > No manual `terraform apply` on your laptop, ever again.
 
 ![Terraform](https://img.shields.io/badge/Terraform-IaC-844FBA?logo=terraform&logoColor=white)
